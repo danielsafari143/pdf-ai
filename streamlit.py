@@ -1,12 +1,11 @@
-import os
 import streamlit as st
+import os
 from langchain_community.document_loaders import PyPDFLoader, UnstructuredPDFLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain.chains import conversational_retrieval
+from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
-from langchain_community.chat_models import openai
-
+from langchain.chat_models import ChatOpenAI
 
 def process_pdf(file_path):
     """Process PDF with fallback strategies"""
@@ -18,14 +17,13 @@ def process_pdf(file_path):
         except:
             loader = UnstructuredPDFLoader(file_path, strategy="ocr_only")
             documents = loader.load()
-
+        
         # Create embeddings and vector store
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         return Chroma.from_documents(documents, embeddings)
     except Exception as e:
         st.error(f"Error processing PDF: {str(e)}")
         return None
-    
 
 def main():
     st.set_page_config(page_title="Chat with your PDF", page_icon="📄")
