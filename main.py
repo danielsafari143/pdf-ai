@@ -15,6 +15,7 @@ def process_pdf(file_path):
         try:
             loader = PyPDFLoader(file_path)
             documents = loader.load()
+            print(documents)
         except:
             loader = UnstructuredPDFLoader(file_path, strategy="ocr_only")
             documents = loader.load()
@@ -25,3 +26,11 @@ def process_pdf(file_path):
     except Exception as e:
         st.error(f"Error processing PDF: {str(e)}")
         return None
+    
+
+def main():
+    process_pdf("C:\\Users\BILOMAT\\Documents\llm\\file.pdf")
+
+
+if __name__ == "__main__":
+    main()
